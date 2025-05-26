@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/%7Brepo-name%7D/static/css/main.6561024e.css",
+    "main.js": "/%7Brepo-name%7D/static/js/main.4e4a05d2.js",
+    "static/js/453.fac1a0ab.chunk.js": "/%7Brepo-name%7D/static/js/453.fac1a0ab.chunk.js",
+    "index.html": "/%7Brepo-name%7D/index.html",
+    "main.6561024e.css.map": "/%7Brepo-name%7D/static/css/main.6561024e.css.map",
+    "main.4e4a05d2.js.map": "/%7Brepo-name%7D/static/js/main.4e4a05d2.js.map",
+    "453.fac1a0ab.chunk.js.map": "/%7Brepo-name%7D/static/js/453.fac1a0ab.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6561024e.css",
+    "static/js/main.4e4a05d2.js"
+  ]
+}
