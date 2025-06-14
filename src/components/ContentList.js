@@ -1,7 +1,11 @@
+// src/components/ContentList.js
 import React, { useEffect, useState } from 'react';
 import ContentCard from './ContentCard';
 import FilterBar from './FilterBar';
 import './ContentList.css';
+import { translateText } from '../utils/translateText';
+import combinedPressReleases from '../data/combined_press_releases.json';
+import Header from './Header';
 
 const ContentList = () => {
   const [articles, setArticles] = useState([]);
@@ -11,22 +15,45 @@ const ContentList = () => {
   const articlesPerPage = 9;
 
   useEffect(() => {
-    fetch('https://api.sampleapis.com/futurama/episodes')
-      .then(res => res.json())
-      .then(data => {
-        const formatted = data.slice(0, 40).map((item, index) => ({
-          title: item.title,
-          description: item.desc,
-          url: item.video,
-          date: item.originalAirDate || "2024-01-01",
-          category: index % 2 === 0 ? "Investment" : "Tourism",
-          source: "Futurama API",
-          fullContent: item.desc + " Full detailed content goes here...",
-          englishSummary: item.desc.slice(0, 60) + "...",
-          chineseSummary: "这是自动翻译的中文摘要。"
-        }));
-        setArticles(formatted);
-      });
+    const loadArticles = async () => {
+      try {
+        // Use the imported JSON data directly
+        const data = combinedPressReleases;
+        
+        const translatedArticles = await Promise.all(
+          data.map(async (article) => {
+            const summary = article.description ? article.description.slice(0, 60) : '';
+            const titleTranslated = article.title ? await translateText(article.title, 'zh') : '';
+            const summaryTranslated = summary ? await translateText(summary, 'zh') : '';
+            const categoryTranslated = article.category ? await translateText(article.category, 'zh') : '';
+            const sourceTranslated = article.source ? await translateText(article.source, 'zh') : '';
+            const dateTranslated = article.Date || article.date
+              ? await translateText(article.Date || article.date, 'zh')
+              : '';
+        
+            return {
+              ...article,
+              englishSummary: summary + "...",
+              chineseSummary: summaryTranslated,
+              englishTitle: article.title,
+              chineseTitle: titleTranslated,
+              englishCategory: article.category,
+              chineseCategory: categoryTranslated,
+              englishSource: article.source,
+              chineseSource: sourceTranslated,
+              englishDate: article.Date || article.date,
+              chineseDate: dateTranslated,
+            };
+          })
+        );
+        
+        setArticles(translatedArticles);
+      } catch (error) {
+        console.error("Error processing articles:", error);
+      }
+    };
+
+    loadArticles();
   }, []);
 
   // 🧪 Filter articles
@@ -44,6 +71,9 @@ const ContentList = () => {
 
   return (
     <div>
+
+      <Header language={language} />
+
       <FilterBar
         category={category}
         setCategory={setCategory}
@@ -51,12 +81,11 @@ const ContentList = () => {
         setLanguage={setLanguage}
       />
 
-        <section className="grid">
+      <section className="grid">
         {currentArticles.map((article, index) => (
-            <ContentCard key={index} article={article} language={language} />
+          <ContentCard key={index} article={article} language={language} />
         ))}
-        </section>
-
+      </section>
 
       <div className="pagination">
         <button onClick={handlePrev} disabled={currentPage === 1}>◀ Prev</button>

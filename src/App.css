@@ -46,10 +46,17 @@ body {
 }
 
 header {
-  background: #0e76a8;
+  /* background: #0e76a8; */
+  background: #ffffff;
   color: white;
   padding: 20px;
   text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
 }
 
 .grid {

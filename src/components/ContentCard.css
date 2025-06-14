@@ -21,4 +21,15 @@
     margin-top: 10px;
     color: #007bff;
   }
+
+  .card-image {
+    width: 100%;
+    height:550px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
   
+  .khmer-text {
+    direction: ltr; /* Khmer is actually LTR despite being different script */
+    text-align: left;
+  }

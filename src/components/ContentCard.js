@@ -1,23 +1,71 @@
 import React from 'react';
 import './ContentCard.css';
 
-const ContentCard = ({ article, language }) => (
+const ContentCard = ({ article, language }) => {
+  const getLabel = (en, zh) => (language === "EN" ? en : zh);
+
+  const labels = {
+    category: getLabel("Category", "类别"),
+    source: getLabel("Source", "来源"),
+    date: getLabel("Date", "日期"),
+    readMore: getLabel("Read More", "阅读更多")
+  };
+
+  return (
     <div className="card">
-      <p>📅 <strong>Date:</strong> {article.date}</p>
-      <h2>📰 {article.title}</h2>
-      <p>🗂️ <strong>Category:</strong> {article.category}</p>
-      <p>🏷️ <strong>Source:</strong> {article.source}</p>
-      <p>📄 <strong>Full Content:</strong> {article.fullContent}</p>
-      {language === "EN" ? (
-        <p>📝 <strong>English Summary:</strong> {article.englishSummary}</p>
-      ) : (
-        <p>🇨🇳 <strong>Chinese Summary:</strong> {article.chineseSummary}</p>
+      {article.link && (
+        <img
+          src={article.link}
+          alt={article.englishTitle}
+          className="card-image"
+          onError={(e) => {
+            e.target.onerror = null; 
+            e.target.src = 'https://via.placeholder.com/300x200?text=Image+Not+Available'
+          }}
+        />
       )}
-      <a href={article.url} target="_blank" rel="noopener noreferrer">
-        🔗 Read More
+
+      <p>🗂️ <strong>{labels.category}:</strong> {language === "EN" ? article.englishCategory : article.chineseCategory}</p>
+
+      <p>
+        📍 <strong>{labels.source}:</strong>{" "}
+        {(() => {
+          const sourceMap = {
+            mef: { name: getLabel("Ministry of Economy and Finance", "经济与财政部"), url: "https://mef.gov.kh/" },
+            khmertimes: { name: getLabel("Khmer Times", "高棉时报"), url: "https://www.khmertimeskh.com/" },
+            ppp: { name: getLabel("Phnom Penh Post", "金边邮报"), url: "https://www.phnompenhpost.com/" },
+            cdc: { name: getLabel("Council for the Development of Cambodia", "柬埔寨发展委员会"), url: "https://cdc.gov.kh/" }
+          };
+
+          const src = article.englishSource?.toLowerCase();
+          const sourceInfo = sourceMap[src];
+
+          return sourceInfo ? (
+            <a href={sourceInfo.url} target="_blank" rel="noopener noreferrer">
+              {sourceInfo.name}
+            </a>
+          ) : (
+            language === "EN" ? article.englishSource : article.chineseSource
+          );
+        })()}
+      </p>
+
+      <h2 className="card-title">
+        {language === "EN" ? article.englishTitle : article.chineseTitle}
+      </h2>
+
+      <p>📅 <strong>{labels.date}:</strong> {language === "EN" ? article.englishDate : article.chineseDate}</p>
+
+      <a 
+        href={article.url} 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="card-link"
+      >
+        🔗 {labels.readMore}
       </a>
     </div>
   );
-  
+};
 
 export default ContentCard;
