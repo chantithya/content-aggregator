@@ -98,6 +98,7 @@ def load_and_process_csv():
         'cdc': 'International Cooperation',
         'khmertimes': 'Regulations',
         'mef': 'Investment',
+        'tourism': 'Tourism',
         'ppp': 'Major Infrastructure Projects'
     }
     

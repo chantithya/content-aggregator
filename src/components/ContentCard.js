@@ -34,7 +34,8 @@ const ContentCard = ({ article, language }) => {
             mef: { name: getLabel("Ministry of Economy and Finance", "经济与财政部"), url: "https://mef.gov.kh/" },
             khmertimes: { name: getLabel("Khmer Times", "高棉时报"), url: "https://www.khmertimeskh.com/" },
             ppp: { name: getLabel("Phnom Penh Post", "金边邮报"), url: "https://www.phnompenhpost.com/" },
-            cdc: { name: getLabel("Council for the Development of Cambodia", "柬埔寨发展委员会"), url: "https://cdc.gov.kh/" }
+            cdc: { name: getLabel("Council for the Development of Cambodia", "柬埔寨发展委员会"), url: "https://cdc.gov.kh/" },
+            tourism: { name: getLabel("Ministry of Tourism", "旅游部"), url: "https://tourism.gov.kh/category/news/" }
           };
 
           const src = article.englishSource?.toLowerCase();
