@@ -9,7 +9,7 @@ import Header from './Header';
 
 const ContentList = () => {
   const [articles, setArticles] = useState([]);
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState("Investment");
   const [language, setLanguage] = useState("EN");
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 9;
@@ -43,6 +43,7 @@ const ContentList = () => {
               chineseSource: sourceTranslated,
               englishDate: article.Date || article.date,
               chineseDate: dateTranslated,
+              lastScraped: article.LastScraped || new Date().toISOString(),
             };
           })
         );

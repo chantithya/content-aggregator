@@ -95,9 +95,9 @@ def load_and_process_csv():
     """Load all CSVs, process them, and return combined data"""
     all_data = []
     categories = {
-        'cdc': 'International Cooperation',
-        'khmertimes': 'Regulations',
-        'mef': 'Investment',
+        'khmertimes': 'International Cooperation',
+        'customs': 'Regulations',
+        'cdc': 'Investment',
         'tourism': 'Tourism',
         'ppp': 'Major Infrastructure Projects'
     }

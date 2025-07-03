@@ -1,3 +1,4 @@
+// src/components/FilterBar.js
 import React, { useEffect, useState } from 'react';
 import './FilterBar.css';
 import { translateText } from '../utils/translateText';
@@ -32,14 +33,23 @@ const FilterBar = ({ category, setCategory, language, setLanguage }) => {
     translateCategories();
   }, [language]);
 
+  const handleCategoryClick = (catKey) => {
+    // When "Home" is clicked, set category to "Investment"
+    if (catKey === 'All') {
+      setCategory('Investment');
+    } else {
+      setCategory(catKey);
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-categories">
         {translatedCategories.map((cat) => (
           <button
             key={cat.key}
-            className={`nav-button ${category === cat.key ? 'active' : ''}`}
-            onClick={() => setCategory(cat.key)}
+            className={`nav-button ${category === cat.key || (cat.key === 'All' && category === 'Investment') ? 'active' : ''}`}
+            onClick={() => handleCategoryClick(cat.key)}
           >
             {cat.label}
           </button>

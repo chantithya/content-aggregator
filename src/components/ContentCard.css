@@ -24,7 +24,10 @@
 
   .card-image {
     width: 100%;
-    height:550px;
+    height: auto; /* Let height adjust proportionally */
+    max-height: 550px; /* Maximum height */
+    min-height: 200px; /* Minimum height to prevent collapsing */
+    object-fit: cover; /* Ensures image covers the area without distortion */
     border-radius: 4px;
     margin-bottom: 10px;
   }
@@ -33,3 +36,16 @@
     direction: ltr; /* Khmer is actually LTR despite being different script */
     text-align: left;
   }
+
+  /* Optional: Add media queries for different screen sizes */
+@media (max-width: 768px) {
+  .card-image {
+    max-height: 400px; /* Slightly smaller on tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .card-image {
+    max-height: 300px; /* Even smaller on mobile */
+  }
+}
