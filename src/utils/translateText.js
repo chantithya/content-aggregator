@@ -1,7 +1,7 @@
 // src/utils/translateText.js
 import axios from 'axios';
 
-const API_KEY = 'AIzaSyAKefzdsBG7mOrkDlNeI4qc8QpTyBisWhM'; // 🔐 Replace with your actual API key
+const API_KEY = 'AIzaSyC-yTnRnWeytse9w2qxEbncH5XI9SFulQs'; // 🔐 Replace with your actual API key
 
 export const translateText = async (text, targetLang = 'zh') => {
   try {
