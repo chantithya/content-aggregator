@@ -20,31 +20,73 @@ const ContentList = () => {
         // Use the imported JSON data directly
         const data = combinedPressReleases;
         
+        // const translatedArticles = await Promise.all(
+        //   data.map(async (article) => {
+        //     const summary = article.description ? article.description.slice(0, 60) : '';
+        //     const titleTranslated = article.title ? await translateText(article.title, 'zh') : '';
+        //     const summaryTranslated = summary ? await translateText(summary, 'zh') : '';
+        //     const categoryTranslated = article.category ? await translateText(article.category, 'zh') : '';
+        //     const sourceTranslated = article.source ? await translateText(article.source, 'zh') : '';
+        //     const dateTranslated = article.Date || article.date
+        //       ? await translateText(article.Date || article.date, 'zh')
+        //       : '';
+        
+        //     return {
+        //       ...article,
+        //       englishSummary: summary + "...",
+        //       chineseSummary: summaryTranslated,
+        //       englishTitle: article.title,
+        //       chineseTitle: titleTranslated,
+        //       englishCategory: article.category,
+        //       chineseCategory: categoryTranslated,
+        //       englishSource: article.source,
+        //       chineseSource: sourceTranslated,
+        //       englishDate: article.Date || article.date,
+        //       chineseDate: dateTranslated,
+        //       lastScraped: article.LastScraped || new Date().toISOString(),
+        //     };
+        //   })
+        // );
+
+        
         const translatedArticles = await Promise.all(
           data.map(async (article) => {
-            const summary = article.description ? article.description.slice(0, 60) : '';
-            const titleTranslated = article.title ? await translateText(article.title, 'zh') : '';
-            const summaryTranslated = summary ? await translateText(summary, 'zh') : '';
-            const categoryTranslated = article.category ? await translateText(article.category, 'zh') : '';
-            const sourceTranslated = article.source ? await translateText(article.source, 'zh') : '';
-            const dateTranslated = article.Date || article.date
-              ? await translateText(article.Date || article.date, 'zh')
-              : '';
-        
-            return {
-              ...article,
-              englishSummary: summary + "...",
-              chineseSummary: summaryTranslated,
-              englishTitle: article.title,
-              chineseTitle: titleTranslated,
-              englishCategory: article.category,
-              chineseCategory: categoryTranslated,
-              englishSource: article.source,
-              chineseSource: sourceTranslated,
-              englishDate: article.Date || article.date,
-              chineseDate: dateTranslated,
-              lastScraped: article.LastScraped || new Date().toISOString(),
-            };
+            try {
+              const summary = article.description ? article.description.slice(0, 60) : '';
+              const [titleTranslated, summaryTranslated, categoryTranslated, sourceTranslated, dateTranslated] = 
+                await Promise.all([
+                  article.title ? translateText(article.title, 'zh') : '',
+                  summary ? translateText(summary, 'zh') : '',
+                  article.category ? translateText(article.category, 'zh') : '',
+                  article.source ? translateText(article.source, 'zh') : '',
+                  article.Date || article.date ? translateText(article.Date || article.date, 'zh') : ''
+                ]);
+              
+              return {
+                ...article,
+                englishSummary: summary + "...",
+                chineseSummary: summaryTranslated,
+                englishTitle: article.title,
+                chineseTitle: titleTranslated,
+                englishCategory: article.category,
+                chineseCategory: categoryTranslated,
+                englishSource: article.source,
+                chineseSource: sourceTranslated,
+                englishDate: article.Date || article.date,
+                chineseDate: dateTranslated,
+                lastScraped: article.LastScraped || new Date().toISOString(),
+              };
+            } catch (error) {
+              console.error('Error translating article:', article.title, error);
+              return {
+                ...article,
+                chineseTitle: article.title, // Fallback to original
+                chineseCategory: article.category,
+                chineseSource: article.source,
+                chineseDate: article.Date || article.date,
+                lastScraped: article.LastScraped || new Date().toISOString(),
+              };
+            }
           })
         );
         
