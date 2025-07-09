@@ -155,8 +155,8 @@ const ContentCard = ({ article, language }) => {
 
   // ✅ Move useEffect inside the component
   useEffect(() => {
-    if (language === 'ZH') {
-      translateText(article.englishTitle || article.englishTitle, 'zh').then((translated) => {
+    if (language === 'ZH' && !article.chineseTitle) {
+      translateText(article.englishTitle || article.khmerTitle, 'zh').then((translated) => {
         console.log('Translated title:', translated);
         // optionally store or render this translated title
       });

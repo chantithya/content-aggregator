@@ -224,6 +224,7 @@
 
 
 // src/components/ContentList.js
+// src/components/ContentList.js
 import React, { useEffect, useState, useMemo } from 'react';
 import ContentCard from './ContentCard';
 import FilterBar from './FilterBar';
@@ -266,7 +267,7 @@ const ContentList = () => {
 
         setArticles(processedArticles);
       } catch (error) {
-        // console.error("Error loading articles:", error);
+        console.error("Error loading articles:", error);
       } finally {
         setIsLoading(false);
       }
@@ -316,7 +317,7 @@ const ContentList = () => {
 
           setArticles(updatedArticles);
         } catch (error) {
-          // console.error("Error translating articles:", error);
+          console.error("Error translating articles:", error);
         } finally {
           setIsTranslating(false);
         }
@@ -361,13 +362,14 @@ const ContentList = () => {
       ) : (
         <>
           <section className="grid">
-            {currentArticles.map((article, index) => (
-              <ContentCard 
-                key={`${article.id || index}`} 
-                article={article} 
-                language={language} 
-              />
-            ))}
+          {currentArticles.map((article, index) => (
+            <ContentCard 
+              key={article.id || index} 
+              article={article} 
+              language={language} 
+            />
+          ))}
+
           </section>
 
           <div className="pagination">

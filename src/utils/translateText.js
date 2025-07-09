@@ -26,11 +26,12 @@
 
 
 // src/utils/translateText.js
+// src/utils/translateText.js
 const translationCache = new Map();
 
 export const translateText = async (text, targetLang = 'zh') => {
   if (!text.trim()) return '';
-  
+
   const cacheKey = `${text.toLowerCase()}-${targetLang}`;
   if (translationCache.has(cacheKey)) {
     return translationCache.get(cacheKey);
@@ -40,13 +41,13 @@ export const translateText = async (text, targetLang = 'zh') => {
     const response = await fetch(
       `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`
     );
-    
+
     const data = await response.json();
     const translatedText = data[0].map(item => item[0]).join('');
     translationCache.set(cacheKey, translatedText);
     return translatedText;
   } catch (error) {
-    // console.error('Translation error:', error);
+    console.error('Translation error:', error);
     return text;
   }
 };
@@ -66,19 +67,18 @@ export const translateBatch = async (texts, targetLang = 'zh') => {
 
     // Otherwise, translate only the uncached texts
     const textsToTranslate = texts.filter((text, index) => cachedResults[index] === null);
-    const uniqueTexts = [...new Set(textsToTranslate)]; // Remove duplicates
-    
+    const uniqueTexts = [...new Set(textsToTranslate)];
+
     const response = await fetch(
-      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${targetLang}&dt=t`,
+      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${targetLang}&dt=t&q=${uniqueTexts.map(text => encodeURIComponent(text)).join('&q=')}`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `q=${uniqueTexts.map(text => encodeURIComponent(text)).join('&q=')}`
+        }
       }
     );
-    
+
     const data = await response.json();
     const translatedTexts = data[0].map(item => item[0]);
 
@@ -94,7 +94,7 @@ export const translateBatch = async (texts, targetLang = 'zh') => {
       return translationCache.get(cacheKey) || text;
     });
   } catch (error) {
-    // console.error('Batch translation error:', error);
+    console.error('Batch translation error:', error);
     return texts;
   }
 };
